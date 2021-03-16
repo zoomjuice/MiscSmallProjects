@@ -1,12 +1,12 @@
 from math import inf
 from os import system, name
 
-tower_1 = [inf, 3, 2, 1]
+tower_size = int(input('How many disks would you like to play with?: '))
+tower_1 = [inf] + [i for i in range(tower_size, 0, -1)]
 tower_2 = [inf]
 tower_3 = [inf]
-filled = [inf, 3, 2, 1]
+filled = [inf] + [i for i in range(tower_size, 0, -1)]
 towers = [None, tower_1, tower_2, tower_3]
-
 
 def cls():
     system('cls' if name == 'nt' else 'clear')

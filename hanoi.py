@@ -16,25 +16,57 @@ def move_disk(from_tower, to_tower):
         to_tower.append(from_tower.pop())
 
 
-welcome_string = """
-    Towers of Hanoi rules:
-        -
-    """
+intro_string = """
+╔═════════════════════════════════════════════════════════════════════════╗
+║                 ╔════════════════════════════════════╗                  ║
+║                 ║                                    ║                  ║
+║                 ║  █   █   ███   █   █  █████  █████ ║                  ║
+║                 ║  █   █  █   █  ██  █  █   █    █   ║                  ║
+║                 ║  █████  █████  █ █ █  █   █    █   ║                  ║
+║                 ║  █   █  █   █  █  ██  █   █    █   ║                  ║
+║                 ║  █   █  █   █  █   █  █████  █████ ║                  ║
+║                 ║  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ ║                  ║
+║                 ║       |          |          |      ║                  ║
+║                 ║      █|█         |          |      ║                  ║
+║                 ║     ██|██        |          |      ║                  ║
+║                 ║    ███|███       |          |      ║                  ║
+║                 ║   ████|████      |          |      ║                  ║
+║                 ║  ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾ ║                  ║
+║                 ╚════════════════════════════════════╝                  ║
+║                                                                         ║
+║ Welcome to Towers of Hanoi! Your goal is to move all the disks from the ║
+║ first tower to either of the other towers. The rules are simple:        ║
+║     1.) You may only move the disk from the top of a tower              ║
+║     2.) You may not place a larger disk on top of a smaller one         ║
+╚═════════════════════════════════════════════════════════════════════════╝
+"""
+intro_status = 'Let\'s begin.'
 
 while True:
+    cls()
+    print(intro_string)
+    print(intro_status + '\n')
     tower_size = None
     try:
         tower_size = int(input('How many disks would you like to play with?: '))
     except ValueError:
-        print('Sorry, I didn\'t understand that. Are you sure you entered a whole number? Please try again.')
+        intro_status = 'Sorry, I didn\'t understand that. Please try again.'
         continue
 
     if tower_size <= 1:
-        print('You must have at least 3 disks in your tower. Please choose a new number.')
+        intro_status = 'You must have at least 3 disks in your tower. Please choose a new number.'
+        continue
+    elif tower_size > 100:
+        intro_status = 'Nice try, but I\'m not going to let you trigger an overflow.'
         continue
     elif tower_size > 10:
-        print('Your game would take at least {m} moves to solve, try a smaller tower.'.format(m=(2**tower_size - 1)))
-        continue
+        min_moves = 2**tower_size - 1
+        if min_moves > 1_000_000:
+            intro_status = 'Your game would take at least {:.2e} moves to solve, try a smaller tower.'.format(min_moves)
+            continue
+        else:
+            intro_status = 'Your game would take at least {m} moves to solve, try a smaller tower.'.format(m=min_moves)
+            continue
     else:
         break
 
@@ -76,6 +108,6 @@ while True:
         print('Invalid tower')
         continue
 
-    if tower_3 == filled:
+    if tower_3 == filled or tower_2 == filled:
         print('You win!')
         break

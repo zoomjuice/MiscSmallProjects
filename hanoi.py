@@ -8,9 +8,11 @@ def cls():
 
 
 def move_disk(from_tower, to_tower):
-    if from_tower[-1] == inf:
+    print(from_tower)
+    print(to_tower)
+    if len(from_tower) == 0:
         raise ValueError('This tower has no disks!')
-    elif from_tower[-1] > to_tower[-1]:
+    elif len(to_tower) != 0 and from_tower[-1] > to_tower[-1]:
         raise ValueError('You can\'t place a larger disk on top of a smaller disk')
     else:
         to_tower.append(from_tower.pop())
@@ -70,17 +72,17 @@ while True:
     else:
         break
 
-tower_1 = [inf] + [i for i in range(tower_size, 0, -1)]
-tower_2 = [inf]
-tower_3 = [inf]
-filled = [inf] + [i for i in range(tower_size, 0, -1)]
-towers = [None, tower_1, tower_2, tower_3]
+tower_1 = [i for i in range(tower_size, 0, -1)]
+tower_2 = []
+tower_3 = []
+filled = [i for i in range(tower_size, 0, -1)]
+towers = {'1': tower_1, '2': tower_2, '3': tower_3}
 
 
 def build_towers():
-    t1_pad = tower_1[1:] + [0] * (len(filled) - len(tower_1) + 1)
-    t2_pad = tower_2[1:] + [0] * (len(filled) - len(tower_2) + 1)
-    t3_pad = tower_3[1:] + [0] * (len(filled) - len(tower_3) + 1)
+    t1_pad = tower_1[:] + [0] * (len(filled) - len(tower_1))
+    t2_pad = tower_2[:] + [0] * (len(filled) - len(tower_2))
+    t3_pad = tower_3[:] + [0] * (len(filled) - len(tower_3))
     tower_art = ''
     for i in range(1, len(filled) + 1):
         t1_art = ' ' * (len(filled) - t1_pad[-i]) + '█' * t1_pad[-i] + '|' + '█' * t1_pad[-i] + ' ' * (len(filled) - t1_pad[-i])
@@ -93,11 +95,23 @@ def build_towers():
 while True:
     build_towers()
 
-    src = int(input('Move from which tower? (1, 2, 3): '))
-    dst = int(input('Move to which tower? (1, 2, 3): '))
+    # make a tower selection function
+    while True:
+        src = input('Move from which tower? (1, 2, 3): ')
+        if src in towers.keys():
+            break
+        else:
+            continue
+
+    while True:
+        dst = input('Move to which tower? (1, 2, 3): ')
+        if dst in towers.keys():
+            break
+        else:
+            continue
 
     try:
-        move_disk(towers[src], towers[dst])
+        move_disk(towers.get(src), towers.get(dst))
         cls()
     except ValueError as e:
         cls()

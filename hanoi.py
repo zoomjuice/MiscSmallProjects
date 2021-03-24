@@ -1,4 +1,3 @@
-from math import inf
 from os import system, name
 
 
@@ -16,6 +15,15 @@ def move_disk(from_tower, to_tower):
         raise ValueError('You can\'t place a larger disk on top of a smaller disk')
     else:
         to_tower.append(from_tower.pop())
+
+
+def select_tower(message):
+    while True:
+        ret_val = input(message)
+        if ret_val in towers.keys():
+            return ret_val
+        else:
+            continue
 
 
 intro_string = """
@@ -96,19 +104,8 @@ while True:
     build_towers()
 
     # make a tower selection function
-    while True:
-        src = input('Move from which tower? (1, 2, 3): ')
-        if src in towers.keys():
-            break
-        else:
-            continue
-
-    while True:
-        dst = input('Move to which tower? (1, 2, 3): ')
-        if dst in towers.keys():
-            break
-        else:
-            continue
+    src = select_tower('Move from which tower? (1, 2, 3): ')
+    dst = select_tower('Move to which tower? (1, 2, 3): ')
 
     try:
         move_disk(towers.get(src), towers.get(dst))
@@ -116,10 +113,6 @@ while True:
     except ValueError as e:
         cls()
         print(str(e))
-        continue
-    except IndexError as e:
-        cls()
-        print('Invalid tower')
         continue
 
     if tower_3 == filled or tower_2 == filled:

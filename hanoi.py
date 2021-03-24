@@ -26,6 +26,23 @@ def select_tower(message):
             continue
 
 
+def build_towers():
+    tower_art = ''
+    t1_pad = tower_1.copy() + [0] * (len(filled) - len(tower_1) + 1)
+    t2_pad = tower_2.copy() + [0] * (len(filled) - len(tower_2) + 1)
+    t3_pad = tower_3.copy() + [0] * (len(filled) - len(tower_3) + 1)
+
+    for i in range(1, len(filled) + 2):
+        t1_leftside = str(' ' * (len(filled) - t1_pad[-i]) + '█' * t1_pad[-i])
+        t2_leftside = str(' ' * (len(filled) - t2_pad[-i]) + '█' * t2_pad[-i])
+        t3_leftside = str(' ' * (len(filled) - t3_pad[-i]) + '█' * t3_pad[-i])
+        t1_art = t1_leftside + '|' + t1_leftside[::-1]
+        t2_art = t2_leftside + '|' + t2_leftside[::-1]
+        t3_art = t3_leftside + '|' + t3_leftside[::-1]
+        tower_art += t1_art + t2_art + t3_art + '\n'
+    print(tower_art)
+
+
 intro_string = """
 ╔═════════════════════════════════════════════════════════════════════════╗
 ║                 ╔════════════════════════════════════╗                  ║
@@ -85,20 +102,6 @@ tower_2 = []
 tower_3 = []
 filled = [i for i in range(tower_size, 0, -1)]
 towers = {'1': tower_1, '2': tower_2, '3': tower_3}
-
-
-def build_towers():
-    t1_pad = tower_1[:] + [0] * (len(filled) - len(tower_1))
-    t2_pad = tower_2[:] + [0] * (len(filled) - len(tower_2))
-    t3_pad = tower_3[:] + [0] * (len(filled) - len(tower_3))
-    tower_art = ''
-    for i in range(1, len(filled) + 1):
-        t1_art = ' ' * (len(filled) - t1_pad[-i]) + '█' * t1_pad[-i] + '|' + '█' * t1_pad[-i] + ' ' * (len(filled) - t1_pad[-i])
-        t2_art = ' ' * (len(filled) - t2_pad[-i]) + '█' * t2_pad[-i] + '|' + '█' * t2_pad[-i] + ' ' * (len(filled) - t2_pad[-i])
-        t3_art = ' ' * (len(filled) - t3_pad[-i]) + '█' * t3_pad[-i] + '|' + '█' * t3_pad[-i] + ' ' * (len(filled) - t3_pad[-i])
-        tower_art += t1_art + t2_art + t3_art + '\n'
-    print(tower_art)
-
 
 while True:
     build_towers()
